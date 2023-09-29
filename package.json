@@ -1,0 +1,50 @@
+{
+  "name": "i-have-todo-this",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:server": "turbo run dev --filter=server",
+    "dev:web-app": "turbo run dev --filter=web-app",
+    "build": "turbo run build",
+    "build:server": "turbo run build --filter=server",
+    "build:web-app": "turbo run build --filter=web-app",
+    "build:common": "turbo run build --filter=@common/*",
+    "start": "turbo run start",
+    "start:server": "turbo run start --filter=server",
+    "start:web-app": "turbo run start --filter=web-app",
+    "lint": "turbo run lint",
+    "lint:server": "turbo run lint --filter=server",
+    "lint:web-app": "turbo run lint --filter=web-app",
+    "lint:common": "turbo run lint --filter=@common/*",
+    "format": "turbo run format",
+    "format:server": "turbo run format --filter=server",
+    "format:web-app": "turbo run format --filter=web-app",
+    "format:common": "turbo run format --filter=@common/*",
+    "test": "turbo run test",
+    "test:server": "turbo run test --filter=server",
+    "test:web-app": "turbo run test --filter=web-app",
+    "test:cov": "turbo run test:cov",
+    "test:cov:server": "turbo run test:cov --filter=server",
+    "test:cov:web-app": "turbo run test:cov --filter=web-app",
+    "test:e2e": "turbo run test:e2e",
+    "test:e2e:server": "turbo run test:e2e --filter=server",
+    "check-updates": "npm-check-updates -ws --root",
+    "do-upgrades": "npm-check-updates -ws --root -u",
+    "clean": "turbo run clean && rimraf **/.turbo",
+    "fclean": "turbo run fclean && rimraf **/.turbo node_modules"
+  },
+  "author": "MrSquaare <contact@mrsquaare.fr>",
+  "license": "MIT",
+  "workspaces": [
+    "server",
+    "web-app",
+    "common/*"
+  ],
+  "devDependencies": {
+    "eslint-plugin-tailwindcss": "^3.13.0",
+    "npm-check-updates": "^16.14.4",
+    "turbo": "^1.10.14"
+  }
+}
