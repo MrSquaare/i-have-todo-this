@@ -1,11 +1,16 @@
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as dotenv from "dotenv";
 
 import { AppModule } from "./app.module";
 
+dotenv.config();
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  let port = parseInt(process.env.PORT);
+  port = port || 3000;
 
   const config = new DocumentBuilder()
     .setTitle("I have TODO this")
@@ -16,9 +21,9 @@ async function bootstrap() {
 
   SwaggerModule.setup("api", app, document);
 
-  await app.listen(3000);
+  await app.listen(port);
 
-  Logger.log(`Server running on http://localhost:3000`, "Bootstrap");
-  Logger.log(`Swagger running on http://localhost:3000/api`, "Bootstrap");
+  Logger.log(`Server running on http://localhost:${port}`, "Bootstrap");
+  Logger.log(`Swagger running on http://localhost:${port}/api`, "Bootstrap");
 }
 bootstrap();
