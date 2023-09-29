@@ -1,14 +1,29 @@
-import { TodoDTO, TodoState } from "@common/types";
 import { Test, TestingModule } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
 
+import { Todo } from "./entities/todo.entity";
+import { todosFixture } from "./tests/fixtures/todos";
+import {
+  MockedTodosRepository,
+  getMockedTodosRepository,
+} from "./tests/mocks/repository";
 import { TodosService } from "./todos.service";
 
 describe("TodosService", () => {
   let service: TodosService;
+  let mockedTodosRepository: MockedTodosRepository;
 
   beforeEach(async () => {
+    mockedTodosRepository = getMockedTodosRepository(todosFixture);
+
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TodosService],
+      providers: [
+        {
+          provide: getRepositoryToken(Todo),
+          useValue: mockedTodosRepository,
+        },
+        TodosService,
+      ],
     }).compile();
 
     service = module.get<TodosService>(TodosService);
@@ -19,21 +34,10 @@ describe("TodosService", () => {
   });
 
   it("should return all todos", () => {
-    const mockTodos: TodoDTO[] = [
-      {
-        id: "1",
-        title: "Todo 1",
-        state: TodoState.TODO,
-      },
-      {
-        id: "2",
-        title: "Todo 2",
-        state: TodoState.DONE,
-      },
-    ];
     const got = service.findAll();
-    const expected = mockTodos;
+    const expected = todosFixture;
 
     expect(got).toEqual(expected);
+    expect(mockedTodosRepository.find).toHaveBeenCalledTimes(1);
   });
 });
