@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# OS
+.DS_Store
+
+# Jetbrains
+.idea/
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
