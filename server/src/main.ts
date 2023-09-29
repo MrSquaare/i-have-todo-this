@@ -9,8 +9,7 @@ dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  let port = parseInt(process.env.PORT);
-  port = port || 3000;
+  const port = parseInt(process.env.PORT) || 3000;
 
   const config = new DocumentBuilder()
     .setTitle("I have TODO this")
