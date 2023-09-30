@@ -14,14 +14,6 @@ lerna-debug.log*
 # OS
 .DS_Store
 
-# Tests
-/coverage
-/.nyc_output
-
-# Database
-*.db
-*.sqlite
-
 # IDEs and editors
 /.idea
 .project
