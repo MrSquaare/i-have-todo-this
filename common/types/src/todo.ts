@@ -7,5 +7,6 @@ export enum TodoState {
 
 export type TodoDTO = DTO & {
   title: string;
+  description?: string;
   state: TodoState;
 };

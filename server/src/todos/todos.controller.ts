@@ -20,6 +20,19 @@ export class TodosController {
     return this.todosService.findAll();
   }
 
+  @Get(":id")
+  async findOne(@Param("id") id: Todo["id"]) {
+    try {
+      return await this.todosService.findOne(id);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      throw error;
+    }
+  }
+
   @Patch(":id/toggle")
   async toggle(@Param("id") id: Todo["id"]) {
     try {

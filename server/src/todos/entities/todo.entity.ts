@@ -8,6 +8,9 @@ export class Todo extends BaseEntity implements TodoDTO {
   @Column()
   title: string;
 
+  @Column({ nullable: true })
+  description?: string;
+
   @Column({ type: "int", default: TodoState.TODO })
   state: TodoState;
 }

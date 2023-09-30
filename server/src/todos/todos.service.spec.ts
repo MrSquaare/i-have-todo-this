@@ -62,6 +62,34 @@ describe("TodosService", () => {
     });
   });
 
+  describe("findOne", () => {
+    it("should throw error if todo not found", async () => {
+      mockedTodosRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.findOne("1")).rejects.toBeInstanceOf(NotFoundError);
+
+      expect(mockedTodosRepository.findOne).toHaveBeenCalled();
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith({
+        where: { id: "1" },
+      });
+    });
+
+    it("should return todo", async () => {
+      const todo = todosFixture[0];
+
+      mockedTodosRepository.findOne.mockResolvedValue(todo);
+
+      const got = await service.findOne(todo.id);
+      const expected = todo;
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.findOne).toHaveBeenCalled();
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith({
+        where: { id: todo.id },
+      });
+    });
+  });
+
   describe("toggle", () => {
     it("should throw error if todo not found", async () => {
       mockedTodosRepository.findOne.mockResolvedValue(null);

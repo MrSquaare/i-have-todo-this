@@ -18,6 +18,16 @@ export class TodosService {
     return this.todosRepository.find();
   }
 
+  async findOne(id: Todo["id"]): Promise<Todo> {
+    const todo = await this.todosRepository.findOne({ where: { id } });
+
+    if (!todo) {
+      throw new NotFoundError(`Todo with id ${id} not found`);
+    }
+
+    return todo;
+  }
+
   async toggle(id: Todo["id"]): Promise<Todo> {
     const todo = await this.todosRepository.findOne({ where: { id } });
 
