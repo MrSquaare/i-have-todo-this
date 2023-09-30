@@ -13,7 +13,7 @@ describe("TodosController", () => {
   let mockedTodosService: MockedTodosService;
 
   beforeEach(async () => {
-    mockedTodosService = getMockedTodosService(todosFixture);
+    mockedTodosService = getMockedTodosService();
 
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TodosController],
@@ -28,14 +28,31 @@ describe("TodosController", () => {
     controller = module.get<TodosController>(TodosController);
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  it("should return all todos", () => {
-    const got = controller.findAll();
-    const expected = todosFixture;
+  describe("findAll", () => {
+    it("should return empty array", async () => {
+      mockedTodosService.findAll.mockResolvedValue([]);
 
-    expect(got).toEqual(expected);
+      const got = await controller.findAll();
+      const expected = [];
+
+      expect(got).toEqual(expected);
+    });
+
+    it("should return fixture todos", async () => {
+      mockedTodosService.findAll.mockResolvedValue(todosFixture);
+
+      const got = await controller.findAll();
+      const expected = todosFixture;
+
+      expect(got).toEqual(expected);
+    });
   });
 });

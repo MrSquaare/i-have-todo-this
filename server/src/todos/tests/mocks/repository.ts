@@ -1,8 +1,6 @@
-import { TodoDTO } from "@common/types";
-
-export const getMockedTodosRepository = (todosFixture: TodoDTO[]) => {
+export const getMockedTodosRepository = () => {
   return jest.fn(() => ({
-    find: jest.fn(() => todosFixture),
+    find: jest.fn(),
   }))();
 };
 

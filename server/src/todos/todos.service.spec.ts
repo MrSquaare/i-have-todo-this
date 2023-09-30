@@ -14,7 +14,7 @@ describe("TodosService", () => {
   let mockedTodosRepository: MockedTodosRepository;
 
   beforeEach(async () => {
-    mockedTodosRepository = getMockedTodosRepository(todosFixture);
+    mockedTodosRepository = getMockedTodosRepository();
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -29,15 +29,33 @@ describe("TodosService", () => {
     service = module.get<TodosService>(TodosService);
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  it("should return all todos", () => {
-    const got = service.findAll();
-    const expected = todosFixture;
+  describe("findAll", () => {
+    it("should return empty array", async () => {
+      mockedTodosRepository.find.mockResolvedValue([]);
 
-    expect(got).toEqual(expected);
-    expect(mockedTodosRepository.find).toHaveBeenCalledTimes(1);
+      const got = await service.findAll();
+      const expected = [];
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.find).toHaveBeenCalledTimes(1);
+    });
+
+    it("should return fixture todos", async () => {
+      mockedTodosRepository.find.mockResolvedValue(todosFixture);
+
+      const got = await service.findAll();
+      const expected = todosFixture;
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.find).toHaveBeenCalledTimes(1);
+    });
   });
 });
