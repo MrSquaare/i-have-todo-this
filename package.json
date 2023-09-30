@@ -32,7 +32,7 @@
     "test:e2e:server": "turbo run test:e2e --filter=server",
     "check-updates": "npm-check-updates -ws --root",
     "do-upgrades": "npm-check-updates -ws --root -u",
-    "clean": "turbo run clean && rimraf **/.turbo",
+    "clean": "turbo run clean && rimraf **/.turbo && rimraf node_modules/.cache",
     "fclean": "turbo run fclean && rimraf **/.turbo node_modules"
   },
   "author": "MrSquaare <contact@mrsquaare.fr>",
