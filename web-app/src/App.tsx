@@ -1,15 +1,19 @@
 import { DotsThree } from "@phosphor-icons/react";
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { useQuery } from "react-query";
 
 import { fetchTodos } from "./api/todos";
-import { TodoList } from "./components/todos/list";
+import { TodoList, TodoListOnToggle } from "./components/todos/list";
 import { useError } from "./hooks/useError";
 
 export const App: FC = () => {
   const { data: todos, error: todosError } = useQuery("todos", fetchTodos);
 
   const { globalError } = useError(todosError);
+
+  const onToggle = useCallback<TodoListOnToggle>(() => {
+    throw new Error("Not implemented");
+  }, []);
 
   return (
     <main className={"flex min-h-screen items-center"}>
@@ -39,7 +43,7 @@ export const App: FC = () => {
             </p>
           </div>
         ) : (
-          <TodoList todos={todos} />
+          <TodoList onToggle={onToggle} todos={todos} />
         )}
       </div>
     </main>

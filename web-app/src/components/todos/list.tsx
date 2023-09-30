@@ -1,8 +1,11 @@
 import { TodoDTO } from "@common/types";
 import { FC } from "react";
 
+export type TodoListOnToggle = (todo: TodoDTO, value: boolean) => void;
+
 export type TodoListItemProps = {
   todo: TodoDTO;
+  onToggle: TodoListOnToggle;
 };
 
 export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
@@ -35,13 +38,14 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
 
 export type TodoListProps = {
   todos: TodoDTO[];
+  onToggle: TodoListOnToggle;
 };
 
-export const TodoList: FC<TodoListProps> = ({ todos }) => {
+export const TodoList: FC<TodoListProps> = ({ todos, onToggle }) => {
   return (
     <ul className={"flex flex-col gap-2"}>
       {todos.map((todo) => (
-        <TodoListItem key={todo.id} todo={todo} />
+        <TodoListItem key={todo.id} onToggle={onToggle} todo={todo} />
       ))}
     </ul>
   );
