@@ -24,6 +24,17 @@ describe("TodoList", () => {
     expect(todoTitles[1]).toHaveTextContent(todosFixture[1].title);
   });
 
+  it("should be checked depending on todo state", () => {
+    const onToggle = jest.fn();
+
+    render(<TodoList onToggle={onToggle} todos={todosFixture} />);
+
+    const todoCheckboxes = screen.getAllByTestId("todo-checkbox");
+
+    expect(todoCheckboxes[0]).not.toBeChecked();
+    expect(todoCheckboxes[1]).toBeChecked();
+  });
+
   it("should call onToggle when a todo is toggled", () => {
     const onToggle = jest.fn();
 
