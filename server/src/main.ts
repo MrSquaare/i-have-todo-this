@@ -1,11 +1,13 @@
+// eslint-disable-next-line import/order
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import * as dotenv from "dotenv";
 
 import { AppModule } from "./app.module";
-
-dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,4 +28,5 @@ async function bootstrap() {
   Logger.log(`Server running on http://localhost:${port}`, "Bootstrap");
   Logger.log(`Swagger running on http://localhost:${port}/api`, "Bootstrap");
 }
-bootstrap();
+
+bootstrap().catch(console.error);
