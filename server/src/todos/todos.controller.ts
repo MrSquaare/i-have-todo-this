@@ -1,5 +1,14 @@
-import { Controller, Get } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+} from "@nestjs/common";
 
+import { NotFoundError } from "../common/errors/not-found";
+
+import { Todo } from "./entities/todo.entity";
 import { TodosService } from "./todos.service";
 
 @Controller("todos")
@@ -7,7 +16,20 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.todosService.findAll();
+  }
+
+  @Patch(":id/toggle")
+  async toggle(@Param("id") id: Todo["id"]) {
+    try {
+      return await this.todosService.toggle(id);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      throw error;
+    }
   }
 }

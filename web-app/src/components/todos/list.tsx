@@ -1,11 +1,14 @@
-import { TodoDTO } from "@common/types";
+import { TodoDTO, TodoState } from "@common/types";
 import { FC } from "react";
+
+export type TodoListOnToggle = (todo: TodoDTO) => void;
 
 export type TodoListItemProps = {
   todo: TodoDTO;
+  onToggle: TodoListOnToggle;
 };
 
-export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
+export const TodoListItem: FC<TodoListItemProps> = ({ todo, onToggle }) => {
   return (
     <li
       className={
@@ -13,11 +16,13 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
       }
     >
       <input
+        checked={todo.state === TodoState.DONE}
         className={
           "peer absolute left-4 h-6 w-6 rounded-md border-neutral-300 bg-white"
         }
         data-testid={"todo-checkbox"}
         id={`todo-checkbox-${todo.id}`}
+        onChange={() => onToggle(todo)}
         type={"checkbox"}
       />
       <label
@@ -35,13 +40,14 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
 
 export type TodoListProps = {
   todos: TodoDTO[];
+  onToggle: TodoListOnToggle;
 };
 
-export const TodoList: FC<TodoListProps> = ({ todos }) => {
+export const TodoList: FC<TodoListProps> = ({ todos, onToggle }) => {
   return (
     <ul className={"flex flex-col gap-2"}>
       {todos.map((todo) => (
-        <TodoListItem key={todo.id} todo={todo} />
+        <TodoListItem key={todo.id} onToggle={onToggle} todo={todo} />
       ))}
     </ul>
   );

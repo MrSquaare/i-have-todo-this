@@ -1,4 +1,6 @@
+import { TodoState } from "@common/types";
 import { screen, waitFor } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 import * as nock from "nock";
 
 import * as todos from "./api/todos";
@@ -85,5 +87,55 @@ describe("App", () => {
 
     expect(error).toBeInTheDocument();
     expect(error).toHaveTextContent("My error");
+  });
+
+  it("should toggle todo", async () => {
+    const user = userEvent.setup();
+
+    const listScope = nock(API_URL).get("/todos").reply(200, todosFixture);
+    const toggleScope = nock(API_URL)
+      .patch(`/todos/${todosFixture[0].id}/toggle`)
+      .reply(200, {
+        ...todosFixture[0],
+        state: TodoState.DONE,
+      });
+
+    const mockedFetchTodos = jest
+      .spyOn(todos, "fetchTodos")
+      .mockName("fetchTodos");
+    const mockedToggleTodo = jest
+      .spyOn(todos, "toggleTodo")
+      .mockName("toggleTodo");
+
+    renderWithProviders(<App />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(listScope.isDone()).toBe(true);
+
+    const todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
+
+    expect(todoCheckboxes[0]).not.toBeChecked();
+
+    listScope.get("/todos").reply(200, [
+      {
+        ...todosFixture[0],
+        state: TodoState.DONE,
+      },
+      todosFixture[1],
+    ]);
+    mockedFetchTodos.mockClear();
+
+    await user.click(todoCheckboxes[0]);
+
+    await waitFor(() => expect(mockedToggleTodo).toHaveBeenCalled());
+
+    expect(toggleScope.isDone()).toBe(true);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(listScope.isDone()).toBe(true);
+
+    await waitFor(() => expect(todoCheckboxes[0]).toBeChecked());
   });
 });
