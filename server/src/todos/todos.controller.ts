@@ -22,7 +22,15 @@ export class TodosController {
 
   @Get(":id")
   async findOne(@Param("id") id: Todo["id"]) {
-    throw new Error("Not implemented");
+    try {
+      return await this.todosService.findOne(id);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      throw error;
+    }
   }
 
   @Patch(":id/toggle")
