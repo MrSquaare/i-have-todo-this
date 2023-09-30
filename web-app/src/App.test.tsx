@@ -86,4 +86,36 @@ describe("App", () => {
     expect(error).toBeInTheDocument();
     expect(error).toHaveTextContent("My error");
   });
+
+  it("should toggle todo", async () => {
+    const listScope = nock(API_URL).get("/todos").reply(200, todosFixture);
+    const toggleScope = nock(API_URL)
+      .patch(`/todos/${todosFixture[0].id}`)
+      .reply(200, {
+        ...todosFixture[0],
+        state: "DONE",
+      });
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<App />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(listScope.isDone()).toBe(true);
+
+    const mockedToggleTodo = jest.spyOn(todos, "toggleTodo");
+
+    const todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
+
+    expect(todoCheckboxes[0]).not.toBeChecked();
+
+    todoCheckboxes[0].click();
+
+    await waitFor(() => expect(mockedToggleTodo).toHaveBeenCalled());
+
+    expect(toggleScope.isDone()).toBe(true);
+
+    expect(todoCheckboxes[0]).toBeChecked();
+  });
 });
