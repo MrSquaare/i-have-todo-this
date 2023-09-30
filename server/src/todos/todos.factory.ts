@@ -11,6 +11,7 @@ export class TodosFactory extends Factory<Todo> {
     return {
       id: faker.string.uuid(),
       title: faker.lorem.sentence(),
+      description: faker.lorem.paragraph(),
       state: faker.helpers.arrayElement([TodoState.TODO, TodoState.DONE]),
     };
   }
