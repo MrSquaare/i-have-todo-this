@@ -7,7 +7,7 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.todosService.findAll();
   }
 }

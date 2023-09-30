@@ -11,7 +11,7 @@ export class TodosService {
     private readonly todosRepository: Repository<Todo>,
   ) {}
 
-  findAll() {
+  async findAll(): Promise<Todo[]> {
     return this.todosRepository.find();
   }
 }
