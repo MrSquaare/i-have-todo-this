@@ -6,16 +6,30 @@ import { todosFixture } from "./tests/fixtures/todos";
 describe("TodoList", () => {
   it("should render", () => {
     const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
 
-    render(<TodoList onToggle={onToggle} todos={[]} />);
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={[]}
+      />,
+    );
 
     expect(true).toBe(true);
   });
 
   it("should render todo items", () => {
     const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
 
-    render(<TodoList onToggle={onToggle} todos={todosFixture} />);
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={todosFixture}
+      />,
+    );
 
     const todoTitles = screen.getAllByTestId("todo-label");
 
@@ -26,8 +40,15 @@ describe("TodoList", () => {
 
   it("should be checked depending on todo state", () => {
     const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
 
-    render(<TodoList onToggle={onToggle} todos={todosFixture} />);
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={todosFixture}
+      />,
+    );
 
     const todoCheckboxes = screen.getAllByTestId("todo-checkbox");
 
@@ -37,8 +58,15 @@ describe("TodoList", () => {
 
   it("should call onToggle when a todo is toggled", () => {
     const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
 
-    render(<TodoList onToggle={onToggle} todos={todosFixture} />);
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={todosFixture}
+      />,
+    );
 
     const todoCheckboxes = screen.getAllByTestId("todo-checkbox");
 
@@ -48,5 +76,27 @@ describe("TodoList", () => {
     expect(onToggle).toHaveBeenCalledTimes(2);
     expect(onToggle).toHaveBeenCalledWith(todosFixture[0]);
     expect(onToggle).toHaveBeenCalledWith(todosFixture[1]);
+  });
+
+  it("should call onDetailsClick when a todo details button is clicked", () => {
+    const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
+
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={todosFixture}
+      />,
+    );
+
+    const todoDetailsButtons = screen.getAllByTestId("todo-details");
+
+    todoDetailsButtons[0].click();
+    todoDetailsButtons[1].click();
+
+    expect(onDetailsClick).toHaveBeenCalledTimes(2);
+    expect(onDetailsClick).toHaveBeenCalledWith(todosFixture[0]);
+    expect(onDetailsClick).toHaveBeenCalledWith(todosFixture[1]);
   });
 });
