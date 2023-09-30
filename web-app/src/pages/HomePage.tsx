@@ -2,11 +2,11 @@ import { DotsThree } from "@phosphor-icons/react";
 import { FC, useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { fetchTodos, toggleTodo } from "./api/todos";
-import { TodoList, TodoListOnToggle } from "./components/todos/list";
-import { useError } from "./hooks/useError";
+import { fetchTodos, toggleTodo } from "../api/todos";
+import { TodoList, TodoListOnToggle } from "../components/todos/list";
+import { useError } from "../hooks/useError";
 
-export const App: FC = () => {
+export const HomePage: FC = () => {
   const queryClient = useQueryClient();
   const { data: todos, error: todosError } = useQuery("todos", fetchTodos);
   const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation(

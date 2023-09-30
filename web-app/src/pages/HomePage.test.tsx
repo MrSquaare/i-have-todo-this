@@ -3,20 +3,21 @@ import { screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import * as nock from "nock";
 
-import * as todos from "./api/todos";
-import { App } from "./App";
-import { todosFixture } from "./components/todos/tests/fixtures/todos";
-import { API_URL } from "./constants/api";
-import { renderWithProviders } from "./tests/utilities";
+import * as todos from "../api/todos";
+import { todosFixture } from "../components/todos/tests/fixtures/todos";
+import { API_URL } from "../constants/api";
+import { renderWithProviders } from "../tests/utilities";
 
-describe("App", () => {
+import { HomePage } from "./HomePage";
+
+describe("HomePage", () => {
   afterEach(() => {
     jest.restoreAllMocks();
     nock.cleanAll();
   });
 
   it("should render", async () => {
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     expect(true).toBe(true);
   });
@@ -26,7 +27,7 @@ describe("App", () => {
 
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
 
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
@@ -40,7 +41,7 @@ describe("App", () => {
 
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
 
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
@@ -56,7 +57,7 @@ describe("App", () => {
 
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
 
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
@@ -77,7 +78,7 @@ describe("App", () => {
 
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
 
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
@@ -107,7 +108,7 @@ describe("App", () => {
       .spyOn(todos, "toggleTodo")
       .mockName("toggleTodo");
 
-    renderWithProviders(<App />);
+    renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
