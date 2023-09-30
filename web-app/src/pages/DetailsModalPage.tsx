@@ -94,7 +94,7 @@ export const DetailsModalPage: FC = () => {
                     "inline-flex items-center rounded-full px-2 py-1 font-medium border border-blue-600 text-blue-600 shrink-0",
                     {
                       "bg-white": todo.state === TodoState.TODO,
-                      "bg-blue-100": todo.state === TodoState.DONE,
+                      "bg-blue-600 text-white": todo.state === TodoState.DONE,
                     },
                   )}
                   data-testid={"details-todo-state"}
