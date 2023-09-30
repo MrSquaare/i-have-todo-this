@@ -49,7 +49,7 @@ export const HomePage: FC = () => {
           {globalError ? (
             <div
               className={
-                "mb-4 flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
+                "flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
               }
               role={"alert"}
             >
