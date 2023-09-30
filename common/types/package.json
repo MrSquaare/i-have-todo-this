@@ -7,9 +7,9 @@
   "types": "dist/types/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
-    "dev:commonjs": "tsc -w -p tsconfig.commonjs.json",
-    "dev:esm": "tsc -w -p tsconfig.esm.json",
-    "dev:types": "tsc -w -p tsconfig.types.json",
+    "dev:commonjs": "tsc -w --preserveWatchOutput -p tsconfig.commonjs.json",
+    "dev:esm": "tsc -w --preserveWatchOutput -p tsconfig.esm.json",
+    "dev:types": "tsc -w --preserveWatchOutput -p tsconfig.types.json",
     "dev": "npm-run-all -p dev:*",
     "build:commonjs": "tsc -p tsconfig.commonjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",
