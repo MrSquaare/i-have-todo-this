@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, NotFoundException, Post } from "@nestjs/common";
+
+import { NotFoundError } from "../common/errors/not-found";
 
 import { ToggleTodoDTO } from "./dtos/toggle.dto";
 import { TodosService } from "./todos.service";
@@ -14,6 +16,14 @@ export class TodosController {
 
   @Post()
   async toggle(@Body() toggleTodoDTO: ToggleTodoDTO) {
-    throw new Error("Not implemented");
+    try {
+      return await this.todosService.toggle(toggleTodoDTO.id);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw new NotFoundException(error.message);
+      }
+
+      throw error;
+    }
   }
 }

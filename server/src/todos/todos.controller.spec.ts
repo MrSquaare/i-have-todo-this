@@ -69,6 +69,7 @@ describe("TodosController", () => {
       const got = controller.toggle({ id: "1" });
 
       await expect(got).rejects.toBeInstanceOf(NotFoundException);
+
       expect(mockedTodosService.toggle).toHaveBeenCalled();
     });
 
