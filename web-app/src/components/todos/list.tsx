@@ -22,7 +22,7 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo, onToggle }) => {
         }
         data-testid={"todo-checkbox"}
         id={`todo-checkbox-${todo.id}`}
-        onClick={() => onToggle(todo)}
+        onChange={() => onToggle(todo)}
         type={"checkbox"}
       />
       <label
