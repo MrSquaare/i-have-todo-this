@@ -6,6 +6,6 @@ export const fetchTodos = async (): Promise<TodoDTO[]> => {
   return fetchApi().get("/todos").json();
 };
 
-export const toggleTodo = async (): Promise<TodoDTO> => {
-  throw new Error("Not implemented");
+export const toggleTodo = async (id: TodoDTO["id"]): Promise<TodoDTO> => {
+  return fetchApi().patch(undefined, `/todos/${id}/toggle`).json();
 };

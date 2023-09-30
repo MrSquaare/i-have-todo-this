@@ -1,19 +1,31 @@
 import { DotsThree } from "@phosphor-icons/react";
 import { FC, useCallback } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { fetchTodos } from "./api/todos";
+import { fetchTodos, toggleTodo } from "./api/todos";
 import { TodoList, TodoListOnToggle } from "./components/todos/list";
 import { useError } from "./hooks/useError";
 
 export const App: FC = () => {
+  const queryClient = useQueryClient();
   const { data: todos, error: todosError } = useQuery("todos", fetchTodos);
+  const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation(
+    toggleTodo,
+    {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries("todos");
+      },
+    },
+  );
 
-  const { globalError } = useError(todosError);
+  const { globalError } = useError(todosError ?? toggleTodoError);
 
-  const onToggle = useCallback<TodoListOnToggle>(() => {
-    throw new Error("Not implemented");
-  }, []);
+  const onToggle = useCallback<TodoListOnToggle>(
+    (todo) => {
+      toggleTodoMutate(todo.id);
+    },
+    [toggleTodoMutate],
+  );
 
   return (
     <main className={"flex min-h-screen items-center"}>
