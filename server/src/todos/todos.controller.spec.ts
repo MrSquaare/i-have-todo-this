@@ -66,7 +66,7 @@ describe("TodosController", () => {
         new NotFoundError(`Todo with id 1 not found`),
       );
 
-      const got = controller.toggle({ id: "1" });
+      const got = controller.toggle("1");
 
       await expect(got).rejects.toBeInstanceOf(NotFoundException);
 
@@ -82,7 +82,7 @@ describe("TodosController", () => {
 
       mockedTodosService.toggle.mockResolvedValue(expected);
 
-      const got = await controller.toggle({ id: todo.id });
+      const got = await controller.toggle(todo.id);
 
       expect(got).toEqual(expected);
       expect(mockedTodosService.toggle).toHaveBeenCalled();
@@ -97,7 +97,7 @@ describe("TodosController", () => {
 
       mockedTodosService.toggle.mockResolvedValue(expected);
 
-      const got = await controller.toggle({ id: todo.id });
+      const got = await controller.toggle(todo.id);
 
       expect(got).toEqual(expected);
       expect(mockedTodosService.toggle).toHaveBeenCalled();
