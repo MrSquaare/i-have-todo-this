@@ -2,8 +2,6 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { TodosModule } from "./todos/todos.module";
 
 @Module({
@@ -30,7 +28,5 @@ import { TodosModule } from "./todos/todos.module";
     ),
     TodosModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
