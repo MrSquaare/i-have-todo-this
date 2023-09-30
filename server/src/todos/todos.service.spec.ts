@@ -2,6 +2,8 @@ import { TodoState } from "@common/types";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 
+import { NotFoundError } from "../common/errors/not-found";
+
 import { Todo } from "./entities/todo.entity";
 import { todosFixture } from "./tests/fixtures/todos";
 import {
@@ -64,12 +66,12 @@ describe("TodosService", () => {
     it("should throw error if todo not found", async () => {
       mockedTodosRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.toggle("1")).rejects.toThrow(
-        "Todo with id 1 not found",
-      );
+      await expect(service.toggle("1")).rejects.toBeInstanceOf(NotFoundError);
 
       expect(mockedTodosRepository.findOne).toHaveBeenCalled();
-      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith("1");
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith({
+        where: { id: "1" },
+      });
     });
 
     it("should turn todo to done", async () => {
@@ -86,7 +88,9 @@ describe("TodosService", () => {
 
       expect(got).toEqual(expected);
       expect(mockedTodosRepository.findOne).toHaveBeenCalled();
-      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith(todo.id);
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith({
+        where: { id: todo.id },
+      });
       expect(mockedTodosRepository.save).toHaveBeenCalled();
       expect(mockedTodosRepository.save).toHaveBeenCalledWith(expected);
     });
@@ -105,7 +109,9 @@ describe("TodosService", () => {
 
       expect(got).toEqual(expected);
       expect(mockedTodosRepository.findOne).toHaveBeenCalled();
-      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith(todo.id);
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith({
+        where: { id: todo.id },
+      });
       expect(mockedTodosRepository.save).toHaveBeenCalled();
       expect(mockedTodosRepository.save).toHaveBeenCalledWith(expected);
     });
