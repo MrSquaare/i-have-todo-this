@@ -19,7 +19,13 @@ export class TodosService {
   }
 
   async findOne(id: Todo["id"]): Promise<Todo> {
-    throw new Error("Method not implemented.");
+    const todo = await this.todosRepository.findOne({ where: { id } });
+
+    if (!todo) {
+      throw new NotFoundError(`Todo with id ${id} not found`);
+    }
+
+    return todo;
   }
 
   async toggle(id: Todo["id"]): Promise<Todo> {
