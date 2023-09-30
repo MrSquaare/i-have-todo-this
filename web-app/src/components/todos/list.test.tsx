@@ -35,7 +35,7 @@ describe("TodoList", () => {
     todoCheckboxes[1].click();
 
     expect(onToggle).toHaveBeenCalledTimes(2);
-    expect(onToggle).toHaveBeenCalledWith(todosFixture[0], true);
-    expect(onToggle).toHaveBeenCalledWith(todosFixture[1], false);
+    expect(onToggle).toHaveBeenCalledWith(todosFixture[0]);
+    expect(onToggle).toHaveBeenCalledWith(todosFixture[1]);
   });
 });

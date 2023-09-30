@@ -1,14 +1,14 @@
 import { TodoDTO } from "@common/types";
 import { FC } from "react";
 
-export type TodoListOnToggle = (todo: TodoDTO, value: boolean) => void;
+export type TodoListOnToggle = (todo: TodoDTO) => void;
 
 export type TodoListItemProps = {
   todo: TodoDTO;
   onToggle: TodoListOnToggle;
 };
 
-export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
+export const TodoListItem: FC<TodoListItemProps> = ({ todo, onToggle }) => {
   return (
     <li
       className={
@@ -21,6 +21,7 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo }) => {
         }
         data-testid={"todo-checkbox"}
         id={`todo-checkbox-${todo.id}`}
+        onClick={() => onToggle(todo)}
         type={"checkbox"}
       />
       <label
