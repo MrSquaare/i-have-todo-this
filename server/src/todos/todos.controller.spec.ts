@@ -73,6 +73,18 @@ describe("TodosController", () => {
       expect(mockedTodosService.toggle).toHaveBeenCalled();
     });
 
+    it("should rethrow error if unhandled error", async () => {
+      const error = new Error(`Something went wrong`);
+
+      mockedTodosService.toggle.mockRejectedValue(error);
+
+      const got = controller.toggle("1");
+
+      await expect(got).rejects.toBe(error);
+
+      expect(mockedTodosService.toggle).toHaveBeenCalled();
+    });
+
     it("should turn todo to done", async () => {
       const todo = todosFixture[0];
       const expected = {
