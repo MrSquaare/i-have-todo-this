@@ -1,4 +1,4 @@
-import { TodoDTO } from "@common/types";
+import { TodoDTO, TodoState } from "@common/types";
 import { FC } from "react";
 
 export type TodoListOnToggle = (todo: TodoDTO) => void;
@@ -16,6 +16,7 @@ export const TodoListItem: FC<TodoListItemProps> = ({ todo, onToggle }) => {
       }
     >
       <input
+        checked={todo.state === TodoState.DONE}
         className={
           "peer absolute left-4 h-6 w-6 rounded-md border-neutral-300 bg-white"
         }
