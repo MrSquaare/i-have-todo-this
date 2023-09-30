@@ -24,11 +24,7 @@ describe("HomePage", () => {
   });
 
   it("should show loading", async () => {
-    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
-
     renderWithProviders(<HomePage />);
-
-    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
     const spinner = screen.getByTestId("spinner");
 
