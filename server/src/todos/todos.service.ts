@@ -18,6 +18,10 @@ export class TodosService {
     return this.todosRepository.find();
   }
 
+  async findOne(id: Todo["id"]): Promise<Todo> {
+    throw new Error("Method not implemented.");
+  }
+
   async toggle(id: Todo["id"]): Promise<Todo> {
     const todo = await this.todosRepository.findOne({ where: { id } });
 
