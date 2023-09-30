@@ -1,4 +1,8 @@
+import { TodoState } from "@common/types";
+import { NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
+
+import { NotFoundError } from "../common/errors/not-found";
 
 import { todosFixture } from "./tests/fixtures/todos";
 import {
@@ -53,6 +57,49 @@ describe("TodosController", () => {
       const expected = todosFixture;
 
       expect(got).toEqual(expected);
+    });
+  });
+
+  describe("toggle", () => {
+    it("should throw error if todo not found", async () => {
+      mockedTodosService.toggle.mockRejectedValue(
+        new NotFoundError(`Todo with id 1 not found`),
+      );
+
+      const got = controller.toggle({ id: "1" });
+
+      await expect(got).rejects.toBeInstanceOf(NotFoundException);
+      expect(mockedTodosService.toggle).toHaveBeenCalled();
+    });
+
+    it("should turn todo to done", async () => {
+      const todo = todosFixture[0];
+      const expected = {
+        ...todo,
+        state: TodoState.DONE,
+      };
+
+      mockedTodosService.toggle.mockResolvedValue(expected);
+
+      const got = await controller.toggle({ id: todo.id });
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosService.toggle).toHaveBeenCalled();
+    });
+
+    it("should turn done to todo", async () => {
+      const todo = todosFixture[1];
+      const expected = {
+        ...todo,
+        state: TodoState.TODO,
+      };
+
+      mockedTodosService.toggle.mockResolvedValue(expected);
+
+      const got = await controller.toggle({ id: todo.id });
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosService.toggle).toHaveBeenCalled();
     });
   });
 });
