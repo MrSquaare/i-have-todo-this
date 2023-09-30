@@ -1,3 +1,4 @@
+import { TodoState } from "@common/types";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 
@@ -56,6 +57,57 @@ describe("TodosService", () => {
 
       expect(got).toEqual(expected);
       expect(mockedTodosRepository.find).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("toggle", () => {
+    it("should throw error if todo not found", async () => {
+      mockedTodosRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.toggle("1")).rejects.toThrow(
+        "Todo with id 1 not found",
+      );
+
+      expect(mockedTodosRepository.findOne).toHaveBeenCalled();
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith("1");
+    });
+
+    it("should turn todo to done", async () => {
+      const todo = todosFixture[0];
+      const expected = {
+        ...todo,
+        state: TodoState.DONE,
+      };
+
+      mockedTodosRepository.findOne.mockResolvedValue(todo);
+      mockedTodosRepository.save.mockResolvedValue(expected);
+
+      const got = await service.toggle(todo.id);
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.findOne).toHaveBeenCalled();
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith(todo.id);
+      expect(mockedTodosRepository.save).toHaveBeenCalled();
+      expect(mockedTodosRepository.save).toHaveBeenCalledWith(expected);
+    });
+
+    it("should turn done to todo", async () => {
+      const todo = todosFixture[1];
+      const expected = {
+        ...todo,
+        state: TodoState.TODO,
+      };
+
+      mockedTodosRepository.findOne.mockResolvedValue(todo);
+      mockedTodosRepository.save.mockResolvedValue(expected);
+
+      const got = await service.toggle(todo.id);
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.findOne).toHaveBeenCalled();
+      expect(mockedTodosRepository.findOne).toHaveBeenCalledWith(todo.id);
+      expect(mockedTodosRepository.save).toHaveBeenCalled();
+      expect(mockedTodosRepository.save).toHaveBeenCalledWith(expected);
     });
   });
 });

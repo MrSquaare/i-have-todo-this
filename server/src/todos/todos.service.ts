@@ -14,4 +14,8 @@ export class TodosService {
   async findAll(): Promise<Todo[]> {
     return this.todosRepository.find();
   }
+
+  async toggle(id: Todo["id"]): Promise<Todo> {
+    throw new Error("Not implemented");
+  }
 }
