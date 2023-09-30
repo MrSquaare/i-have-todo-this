@@ -20,7 +20,7 @@ export class TodosController {
     return this.todosService.findAll();
   }
 
-  @Patch(":id")
+  @Patch(":id/toggle")
   async toggle(@Param("id") id: Todo["id"]) {
     try {
       return await this.todosService.toggle(id);
