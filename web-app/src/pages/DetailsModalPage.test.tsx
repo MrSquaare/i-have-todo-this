@@ -47,6 +47,26 @@ describe("DetailsModalPage", () => {
     expect(mockedNavigate).toHaveBeenCalledWith("/", expect.anything());
   });
 
+  it("should show error", async () => {
+    const scope = nock(API_URL).get("/todos/1").reply(400, {
+      name: "Error",
+      message: "My error",
+    });
+
+    mockedUseParams.mockReturnValue({ id: "1" });
+
+    renderWithProviders(<DetailsModalPage />);
+
+    await waitFor(() => expect(mockedUseParams).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const error = await screen.findByTestId("details-error");
+
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent("My error");
+  });
+
   it("should show todo", async () => {
     const todo = todosFixture[0];
 

@@ -7,6 +7,7 @@ import { FC, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { fetchTodo, toggleTodo } from "../api/todos";
+import { useError } from "../hooks/useError";
 import { useNotFound } from "../hooks/useNotFound";
 
 type Params = {
@@ -22,7 +23,7 @@ export const DetailsModalPage: FC = () => {
     queryKey: ["todos", id],
     queryFn: id ? () => fetchTodo(id) : undefined,
   });
-  const { mutate: toggleTodoMutate } = useMutation({
+  const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation({
     mutationFn: id ? () => toggleTodo(id) : undefined,
     onSuccess: () => queryClient.invalidateQueries(["todos"]),
   });
@@ -38,6 +39,8 @@ export const DetailsModalPage: FC = () => {
   useNotFound(todoError, () => {
     onClose();
   });
+
+  const { globalError } = useError(todoError ?? toggleTodoError);
 
   return (
     <Dialog.Root
@@ -59,7 +62,20 @@ export const DetailsModalPage: FC = () => {
             "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-white focus:outline-none data-[state=open]:animate-contentShow"
           }
         >
-          {!todo ? (
+          {globalError ? (
+            <div className={"p-8"}>
+              <div
+                className={
+                  "flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
+                }
+                role={"alert"}
+              >
+                <p className={"font-medium"} data-testid={"details-error"}>
+                  {globalError}
+                </p>
+              </div>
+            </div>
+          ) : !todo ? (
             <div className={"flex h-96 items-center justify-center p-8"}>
               <DotsThree
                 className={"h-12 w-12 animate-bounce"}
