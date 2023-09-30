@@ -6,6 +6,7 @@ import * as nock from "nock";
 import * as todos from "../api/todos";
 import { todosFixture } from "../components/todos/tests/fixtures/todos";
 import { API_URL } from "../constants/api";
+import { mockedNavigate } from "../tests/mocks/router";
 import { renderWithProviders } from "../tests/utilities";
 
 import { HomePage } from "./HomePage";
@@ -23,15 +24,13 @@ describe("HomePage", () => {
   });
 
   it("should show loading", async () => {
-    nock(API_URL).get("/todos").delay(1000).reply(200, []);
-
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
 
     renderWithProviders(<HomePage />);
 
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
-    const spinner = await screen.findByTestId("spinner");
+    const spinner = screen.getByTestId("spinner");
 
     expect(spinner).toBeInTheDocument();
   });
@@ -138,5 +137,25 @@ describe("HomePage", () => {
     expect(listScope.isDone()).toBe(true);
 
     await waitFor(() => expect(todoCheckboxes[0]).toBeChecked());
+  });
+
+  it("should navigate to details", async () => {
+    const scope = nock(API_URL).get("/todos").reply(200, todosFixture);
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const todoDetails = await screen.findAllByTestId("todo-details");
+
+    await userEvent.click(todoDetails[0]);
+
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalled());
+
+    expect(mockedNavigate).toHaveBeenCalledWith(`/${todosFixture[0].id}`);
   });
 });
