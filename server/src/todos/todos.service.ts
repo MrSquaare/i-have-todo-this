@@ -30,7 +30,9 @@ export class TodosService {
   }
 
   async create(dto: CreateTodoDTO): Promise<Todo> {
-    throw new Error("Not implemented");
+    const todo = this.todosRepository.create(dto);
+
+    return this.todosRepository.save(todo);
   }
 
   async toggle(id: Todo["id"]): Promise<Todo> {
