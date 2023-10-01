@@ -1,5 +1,5 @@
 import { TodoDTO, TodoState } from "@common/types";
-import { IsEnum, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Entity, Column } from "typeorm";
 
 import { BaseEntity } from "../../common/entities/base";
@@ -8,6 +8,7 @@ import { BaseEntity } from "../../common/entities/base";
 export class Todo extends BaseEntity implements TodoDTO {
   @Column()
   @IsString()
+  @IsNotEmpty()
   title: string;
 
   @Column({ nullable: true })
