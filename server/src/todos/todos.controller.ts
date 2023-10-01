@@ -38,7 +38,7 @@ export class TodosController {
 
   @Post()
   async create(@Body() dto: CreateTodoDTO) {
-    throw new Error("Not implemented");
+    return this.todosService.create(dto);
   }
 
   @Patch(":id/toggle")
