@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-import { Logger } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
@@ -23,6 +23,9 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   app.enableCors();
+
+  app.useGlobalPipes(new ValidationPipe());
+
   await app.listen(port);
 
   Logger.log(`Server running on http://localhost:${port}`, "Bootstrap");
