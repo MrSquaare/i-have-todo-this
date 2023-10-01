@@ -1,5 +1,5 @@
 import { TodoDTO, TodoState } from "@common/types";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 
 export type TodoListOnToggle = (todo: TodoDTO) => void;
 export type TodoListOnDetailsClick = (todo: TodoDTO) => void;
@@ -64,9 +64,15 @@ export const TodoList: FC<TodoListProps> = ({
   onToggle,
   onDetailsClick,
 }) => {
+  const sortedTodos = useMemo(() => {
+    return [...todos].sort((a, b) => {
+      return a.state - b.state;
+    });
+  }, [todos]);
+
   return (
     <ul className={"flex flex-col gap-2"}>
-      {todos.map((todo) => (
+      {sortedTodos.map((todo) => (
         <TodoListItem
           key={todo.id}
           onDetailsClick={onDetailsClick}
