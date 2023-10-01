@@ -90,6 +90,32 @@ describe("TodosService", () => {
     });
   });
 
+  describe("create", () => {
+    it("should create todo", async () => {
+      const dto = {
+        title: "title",
+        description: "description",
+      };
+      const todo = {
+        ...dto,
+        id: "1",
+        state: TodoState.TODO,
+      };
+
+      mockedTodosRepository.create.mockReturnValue(todo);
+      mockedTodosRepository.save.mockResolvedValue(todo);
+
+      const got = await service.create(dto);
+      const expected = todo;
+
+      expect(got).toEqual(expected);
+      expect(mockedTodosRepository.create).toHaveBeenCalled();
+      expect(mockedTodosRepository.create).toHaveBeenCalledWith(dto);
+      expect(mockedTodosRepository.save).toHaveBeenCalled();
+      expect(mockedTodosRepository.save).toHaveBeenCalledWith(todo);
+    });
+  });
+
   describe("toggle", () => {
     it("should throw error if todo not found", async () => {
       mockedTodosRepository.findOne.mockResolvedValue(null);
