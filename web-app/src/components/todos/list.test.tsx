@@ -56,6 +56,24 @@ describe("TodoList", () => {
     expect(todoCheckboxes[1]).toBeChecked();
   });
 
+  it("should render done todos at the bottom", () => {
+    const onToggle = jest.fn();
+    const onDetailsClick = jest.fn();
+
+    render(
+      <TodoList
+        onDetailsClick={onDetailsClick}
+        onToggle={onToggle}
+        todos={[...todosFixture].reverse()}
+      />,
+    );
+
+    const todoTitles = screen.getAllByTestId("todo-label");
+
+    expect(todoTitles[0]).toHaveTextContent(todosFixture[0].title);
+    expect(todoTitles[1]).toHaveTextContent(todosFixture[1].title);
+  });
+
   it("should call onToggle when a todo is toggled", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
