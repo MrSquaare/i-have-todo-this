@@ -97,6 +97,27 @@ describe("TodosController", () => {
     });
   });
 
+  describe("create", () => {
+    it("should create todo", async () => {
+      const dto = {
+        title: "title",
+        description: "description",
+      };
+      const todo = {
+        ...dto,
+        id: "1",
+        state: TodoState.TODO,
+      };
+
+      mockedTodosService.create.mockResolvedValue(todo);
+
+      const got = await controller.create(dto);
+
+      expect(got).toEqual(todo);
+      expect(mockedTodosService.create).toHaveBeenCalled();
+    });
+  });
+
   describe("toggle", () => {
     it("should throw error if todo not found", async () => {
       mockedTodosService.toggle.mockRejectedValue(
