@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
+import { FC, PropsWithChildren } from "react";
 
 import { queryClientConfig } from "../api/client";
 
@@ -14,26 +15,24 @@ const createTestQueryClient = () => {
       },
       mutations: {
         ...queryClientConfig.defaultOptions?.mutations,
+        cacheTime: Infinity,
         retry: false,
-        useErrorBoundary: true,
       },
     },
   });
 };
 
-export const renderWithProviders = (ui: React.ReactElement) => {
+// eslint-disable-next-line react-refresh/only-export-components
+const Providers: FC<PropsWithChildren> = ({ children }) => {
   const testQueryClient = createTestQueryClient();
-  const { rerender, ...result } = render(
-    <QueryClientProvider client={testQueryClient}>{ui}</QueryClientProvider>,
-  );
 
-  return {
-    ...result,
-    rerender: (rerenderUi: React.ReactElement) =>
-      rerender(
-        <QueryClientProvider client={testQueryClient}>
-          {rerenderUi}
-        </QueryClientProvider>,
-      ),
-  };
+  return (
+    <QueryClientProvider client={testQueryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+};
+
+export const renderWithProviders = (ui: React.ReactElement) => {
+  return render(ui, { wrapper: Providers });
 };
