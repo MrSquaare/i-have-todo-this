@@ -21,12 +21,6 @@ describe("AddModalPage", () => {
     expect(true).toBe(true);
   });
 
-  // FIXME: This error is failing because React crashes
-  // This seems to be a bug with Testing Library (and React Query), since this crash does not happen in the browser
-  // (Reproduction: Make server return 400 and try the test steps in the browser)
-  // See DetailsModalPage.test.tsx for a similar test that works
-  // eslint-disable-next-line jest/no-commented-out-tests
-  /*
   it("should show error", async () => {
     const scope = nock(API_URL).post("/todos").reply(400, {
       name: "Error",
@@ -54,7 +48,6 @@ describe("AddModalPage", () => {
     expect(error).toBeInTheDocument();
     expect(error).toHaveTextContent("My error");
   });
-  */
 
   it("should create a todo", async () => {
     const user = userEvent.setup();
