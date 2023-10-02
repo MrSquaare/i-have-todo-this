@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 
 import { NotFoundError } from "../common/errors/not-found";
 
-import { CreateTodoDTO } from "./dtos/create.dto";
+import { CreateTodo } from "./dtos/create.dto";
 import { Todo } from "./entities/todo.entity";
 
 @Injectable()
@@ -29,8 +29,8 @@ export class TodosService {
     return todo;
   }
 
-  async create(dto: CreateTodoDTO): Promise<Todo> {
-    const todo = this.todosRepository.create(dto);
+  async create(values: CreateTodo): Promise<Todo> {
+    const todo = this.todosRepository.create(values);
 
     return this.todosRepository.save(todo);
   }

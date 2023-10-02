@@ -10,3 +10,5 @@ export type TodoDTO = DTO & {
   description?: string;
   state: TodoState;
 };
+
+export type CreateTodoDTO = Pick<TodoDTO, "title" | "description">;

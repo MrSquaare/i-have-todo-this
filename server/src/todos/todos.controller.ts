@@ -10,7 +10,7 @@ import {
 
 import { NotFoundError } from "../common/errors/not-found";
 
-import { CreateTodoDTO } from "./dtos/create.dto";
+import { CreateTodo } from "./dtos/create.dto";
 import { Todo } from "./entities/todo.entity";
 import { TodosService } from "./todos.service";
 
@@ -37,8 +37,8 @@ export class TodosController {
   }
 
   @Post()
-  async create(@Body() dto: CreateTodoDTO) {
-    return this.todosService.create(dto);
+  async create(@Body() body: CreateTodo) {
+    return this.todosService.create(body);
   }
 
   @Patch(":id/toggle")
