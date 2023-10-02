@@ -16,7 +16,9 @@ export class TodosService {
   ) {}
 
   async findAll(): Promise<Todo[]> {
-    return this.todosRepository.find();
+    return this.todosRepository.find({
+      order: { created_at: "DESC" },
+    });
   }
 
   async findOne(id: Todo["id"]): Promise<Todo> {

@@ -16,6 +16,7 @@ describe("TodoEntity", () => {
 
       Object.assign(value, {
         id: "70b65a63-94a6-44ce-b551-fd92c83fe192",
+        created_at: "2023-01-01T00:00:00.000Z",
         title: "Todo",
         description: "Todo description",
         state: TodoState.TODO,
@@ -38,6 +39,7 @@ describe("TodoEntity", () => {
 
       const value = {
         id: "1",
+        created_at: "10 January 2021",
         title: "",
         description: 123,
         state: "todo",
@@ -59,6 +61,7 @@ describe("TodoEntity", () => {
 
       const value = {
         id: "1",
+        created_at: "10 January 2021",
         title: "",
         description: 123,
         state: "todo",
@@ -95,6 +98,12 @@ describe("TodoEntity", () => {
             property: "id",
             constraints: {
               isUuid: expect.any(String),
+            },
+          }),
+          expect.objectContaining({
+            property: "created_at",
+            constraints: {
+              isDateString: expect.any(String),
             },
           }),
         ]),
