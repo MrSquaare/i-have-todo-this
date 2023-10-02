@@ -53,11 +53,14 @@ describe("DetailsModalPage", () => {
       message: "My error",
     });
 
+    const mockedFetchTodo = jest.spyOn(todos, "fetchTodo");
+
     mockedUseParams.mockReturnValue({ id: "1" });
 
     renderWithProviders(<DetailsModalPage />);
 
     await waitFor(() => expect(mockedUseParams).toHaveBeenCalled());
+    await waitFor(() => expect(mockedFetchTodo).toHaveBeenCalled());
 
     expect(scope.isDone()).toBe(true);
 

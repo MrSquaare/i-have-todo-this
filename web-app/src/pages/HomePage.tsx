@@ -1,4 +1,4 @@
-import { DotsThree } from "@phosphor-icons/react";
+import { DotsThree, Plus } from "@phosphor-icons/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FC, useCallback } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -41,11 +41,15 @@ export const HomePage: FC = () => {
     [navigate],
   );
 
+  const onAdd = useCallback(() => {
+    navigate("/add");
+  }, [navigate]);
+
   return (
     <>
       <Outlet />
       <main className={"flex min-h-screen items-center"}>
-        <div className={"mx-auto w-full max-w-6xl"}>
+        <div className={"mx-auto w-full max-w-6xl p-4"}>
           {globalError ? (
             <div
               className={
@@ -57,25 +61,40 @@ export const HomePage: FC = () => {
                 {globalError}
               </p>
             </div>
-          ) : !todos ? (
-            <div className={"flex h-96 items-center justify-center"}>
-              <DotsThree
-                className={"h-12 w-12 animate-bounce"}
-                data-testid={"spinner"}
-              />
-            </div>
-          ) : !todos.length ? (
-            <div className={"flex h-96 items-center justify-center"}>
-              <p className={"text-2xl"} data-testid={"empty"}>
-                No todo list
-              </p>
-            </div>
           ) : (
-            <TodoList
-              onDetailsClick={onDetailsClick}
-              onToggle={onToggle}
-              todos={todos}
-            />
+            <>
+              {!todos ? (
+                <div className={"flex h-96 items-center justify-center"}>
+                  <DotsThree
+                    className={"h-12 w-12 animate-bounce"}
+                    data-testid={"spinner"}
+                  />
+                </div>
+              ) : !todos.length ? (
+                <div className={"flex h-96 items-center justify-center"}>
+                  <p className={"text-2xl"} data-testid={"empty"}>
+                    No todo list
+                  </p>
+                </div>
+              ) : (
+                <TodoList
+                  onDetailsClick={onDetailsClick}
+                  onToggle={onToggle}
+                  todos={todos}
+                />
+              )}
+              <div className={"sticky bottom-4 mt-4 flex justify-center"}>
+                <button
+                  className={
+                    "rounded-full border-2 border-white bg-blue-600 p-4 text-white hover:bg-blue-700"
+                  }
+                  data-testid={"add"}
+                  onClick={onAdd}
+                >
+                  <Plus weight={"bold"} />
+                </button>
+              </div>
+            </>
           )}
         </div>
       </main>

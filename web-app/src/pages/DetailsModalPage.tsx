@@ -23,18 +23,21 @@ export const DetailsModalPage: FC = () => {
     queryKey: ["todos", id],
     queryFn: id ? () => fetchTodo(id) : undefined,
   });
+
+  const onClose = useCallback(() => {
+    navigate("/", { replace: true });
+  }, [navigate]);
+
   const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation({
     mutationFn: id ? () => toggleTodo(id) : undefined,
-    onSuccess: () => queryClient.invalidateQueries(["todos"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
   });
 
   const onToggle = useCallback(() => {
     toggleTodoMutate();
   }, [toggleTodoMutate]);
-
-  const onClose = useCallback(() => {
-    navigate("/", { replace: true });
-  }, [navigate]);
 
   useNotFound(todoError, () => {
     onClose();
@@ -59,7 +62,7 @@ export const DetailsModalPage: FC = () => {
         />
         <Dialog.Content
           className={
-            "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-white focus:outline-none data-[state=open]:animate-contentShow"
+            "fixed left-[50%] top-[50%] w-full max-w-[60rem] translate-x-[-50%] translate-y-[-50%] rounded-xl bg-white focus:outline-none data-[state=open]:animate-contentShow"
           }
         >
           {globalError ? (
