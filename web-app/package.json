@@ -7,7 +7,7 @@
     "prebuild": "rimraf dist",
     "dev": "vite",
     "build": "tsc -p tsconfig.build.json && vite build",
-    "start": "vite preview",
+    "start": "serve dist -l 4000",
     "lint": "eslint .",
     "format": "eslint . --fix",
     "test": "jest",
@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.2",
     "react-router-dom": "^6.16.0",
+    "serve": "^14.2.1",
     "wretch": "^2.7.0"
   },
   "devDependencies": {
