@@ -11,6 +11,8 @@
     "build:server": "turbo run build --filter=server",
     "build:web-app": "turbo run build --filter=web-app",
     "build:common": "turbo run build --filter=@common/*",
+    "build:docker:server": "docker build -t i-have-todo-this-server:latest -f server/Dockerfile .",
+    "build:docker:web-app": "docker build -t i-have-todo-this-web-app:latest -f web-app/Dockerfile .",
     "start": "turbo run start",
     "start:server": "turbo run start --filter=server",
     "start:web-app": "turbo run start --filter=web-app",
