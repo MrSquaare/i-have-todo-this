@@ -32,3 +32,5 @@ jobs:
           flags: server
       - name: E2E Tests
         run: npm run test:e2e:server
+      - name: Build Docker image
+        run: npm run build:docker:server

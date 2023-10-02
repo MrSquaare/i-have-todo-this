@@ -1,0 +1,30 @@
+# Dockerfile
+**/*Dockerfile
+
+# Git
+**/.git/
+
+# OS
+**/.DS_Store
+
+# Logs
+**/*.log
+
+# Database
+**/*.db
+**/*.sqlite
+
+# Node
+**/node_modules/
+
+# Build
+**/dist/
+
+# Coverage
+**/coverage/
+
+# Jetbrains
+**/.idea/
+
+# VSCode
+**/.vscode/

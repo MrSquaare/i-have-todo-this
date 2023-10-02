@@ -4,6 +4,19 @@ node_modules/
 # OS
 .DS_Store
 
+# Logs
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# Build
+dist/
+
+# Coverage
+coverage/
+
 # Jetbrains
 .idea/
 
