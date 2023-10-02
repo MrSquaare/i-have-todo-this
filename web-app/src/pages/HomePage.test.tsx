@@ -154,4 +154,24 @@ describe("HomePage", () => {
 
     expect(mockedNavigate).toHaveBeenCalledWith(`/${todosFixture[0].id}`);
   });
+
+  it("should navigate to add", async () => {
+    const scope = nock(API_URL).get("/todos").reply(200, todosFixture);
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const addButton = await screen.findByTestId("add");
+
+    await userEvent.click(addButton);
+
+    await waitFor(() => expect(mockedNavigate).toHaveBeenCalled());
+
+    expect(mockedNavigate).toHaveBeenCalledWith("/add");
+  });
 });
