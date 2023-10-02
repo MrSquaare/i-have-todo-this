@@ -10,11 +10,16 @@
 		{
 			"name": "web-app",
 			"path": "web-app"
+		},
+		{
+			"name": "@common/types",
+			"path": "common/types"
 		}
 	],
 	"settings": {
 		"jest.disabledWorkspaceFolders": [
-			"i-have-todo-this"
+			"i-have-todo-this",
+			"@common/types"
 		]
 	}
 }

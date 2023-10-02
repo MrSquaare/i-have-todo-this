@@ -11,6 +11,8 @@
     "build:server": "turbo run build --filter=server",
     "build:web-app": "turbo run build --filter=web-app",
     "build:common": "turbo run build --filter=@common/*",
+    "build:docker:server": "docker build -t i-have-todo-this-server:latest -f server/Dockerfile .",
+    "build:docker:web-app": "docker build -t i-have-todo-this-web-app:latest -f web-app/Dockerfile .",
     "start": "turbo run start",
     "start:server": "turbo run start --filter=server",
     "start:web-app": "turbo run start --filter=web-app",
@@ -32,7 +34,7 @@
     "test:e2e:server": "turbo run test:e2e --filter=server",
     "check-updates": "npm-check-updates -ws --root",
     "do-upgrades": "npm-check-updates -ws --root -u",
-    "clean": "turbo run clean && rimraf **/.turbo",
+    "clean": "turbo run clean && rimraf **/.turbo && rimraf node_modules/.cache",
     "fclean": "turbo run fclean && rimraf **/.turbo node_modules"
   },
   "author": "MrSquaare <contact@mrsquaare.fr>",
