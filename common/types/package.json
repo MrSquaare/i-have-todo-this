@@ -17,7 +17,6 @@
     "build": "npm-run-all -p build:*",
     "lint": "eslint .",
     "format": "eslint . --fix",
-    "start": "node dist/main",
     "clean": "rimraf dist .turbo",
     "fclean": "rimraf dist .turbo node_modules"
   },
