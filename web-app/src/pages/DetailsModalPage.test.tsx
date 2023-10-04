@@ -94,7 +94,9 @@ describe("DetailsModalPage", () => {
 
     expect(todoState).toHaveTextContent("To do");
     expect(todoTitle).toHaveTextContent(todo.title);
-    expect(todoDescription).toHaveTextContent(todo.description ?? "");
+    expect(todoDescription).toHaveTextContent(
+      todo.description || "No description",
+    );
   });
 
   it("should toggle todo", async () => {

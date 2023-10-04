@@ -112,7 +112,7 @@ export const DetailsModalPage: FC = () => {
                 className={"border-b border-b-neutral-300 p-4"}
                 data-testid={"details-todo-description"}
               >
-                <p>{todo.description}</p>
+                <p>{todo.description || "No description"}</p>
               </div>
               <div className={"flex justify-end gap-2 p-4"}>
                 <button

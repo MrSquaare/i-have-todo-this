@@ -11,6 +11,7 @@ import {
   TodoFormSchema,
   TodoFormValues,
 } from "../components/todos/form";
+import { Button } from "../components/ui/button";
 import { useError } from "../hooks/useError";
 
 export const AddModalPage: FC = () => {
@@ -80,24 +81,20 @@ export const AddModalPage: FC = () => {
             <form onSubmit={form.handleSubmit(onCreate)}>
               <TodoForm form={form} />
               <div className={"flex justify-end gap-2 p-4"}>
-                <button
-                  className={
-                    "rounded-full bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none"
-                  }
+                <Button
                   data-testid={"add-create"}
                   type={"submit"}
+                  variant={"primary"}
                 >
                   Create
-                </button>
-                <button
-                  className={
-                    "rounded-full bg-neutral-200 px-4 py-2 hover:bg-neutral-300"
-                  }
+                </Button>
+                <Button
                   data-testid={"add-close"}
                   onClick={onClose}
+                  variant={"secondary"}
                 >
                   Close
-                </button>
+                </Button>
               </div>
             </form>
           )}
