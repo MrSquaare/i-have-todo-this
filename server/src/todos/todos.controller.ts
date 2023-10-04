@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from "@nestjs/common";
+import { ApiOperation, ApiParam, ApiResponse } from "@nestjs/swagger";
 
 import { NotFoundError } from "../common/errors/not-found";
 
@@ -18,11 +19,17 @@ import { TodosService } from "./todos.service";
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
+  @ApiOperation({ summary: "Get all todos" })
+  @ApiResponse({ status: 200, type: [Todo] })
   @Get()
   async findAll() {
     return this.todosService.findAll();
   }
 
+  @ApiOperation({ summary: "Get a todo" })
+  @ApiParam({ name: "id", type: "string", format: "uuid" })
+  @ApiResponse({ status: 200, type: Todo })
+  @ApiResponse({ status: 404, description: "Todo not found" })
   @Get(":id")
   async findOne(@Param("id") id: Todo["id"]) {
     try {
@@ -36,11 +43,16 @@ export class TodosController {
     }
   }
 
+  @ApiOperation({ summary: "Create a todo" })
+  @ApiResponse({ status: 201, type: Todo })
   @Post()
   async create(@Body() body: CreateTodo) {
     return this.todosService.create(body);
   }
 
+  @ApiOperation({ summary: "Toggle a todo" })
+  @ApiParam({ name: "id", type: "string", format: "uuid" })
+  @ApiResponse({ status: 200, type: Todo })
   @Patch(":id/toggle")
   async toggle(@Param("id") id: Todo["id"]) {
     try {
