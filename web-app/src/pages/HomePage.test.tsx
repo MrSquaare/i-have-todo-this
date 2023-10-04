@@ -26,9 +26,9 @@ describe("HomePage", () => {
   it("should show loading", async () => {
     renderWithProviders(<HomePage />);
 
-    const spinner = screen.getByTestId("spinner");
+    const loader = screen.getByTestId("home-loader");
 
-    expect(spinner).toBeInTheDocument();
+    expect(loader).toBeInTheDocument();
   });
 
   it("should show empty", async () => {
@@ -42,12 +42,60 @@ describe("HomePage", () => {
 
     expect(scope.isDone()).toBe(true);
 
-    const empty = await screen.findByTestId("empty");
+    const empty = await screen.findByTestId("home-empty");
 
     expect(empty).toBeInTheDocument();
   });
 
-  it("should show todos", async () => {
+  it("should show empty if no todo todos", async () => {
+    const scope = nock(API_URL)
+      .get("/todos")
+      .reply(200, [
+        {
+          ...todosFixture[0],
+          state: TodoState.DONE,
+        },
+        todosFixture[1],
+      ]);
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const empty = await screen.findByTestId("home-empty");
+
+    expect(empty).toBeInTheDocument();
+  });
+
+  it("should not show done if no done todos", async () => {
+    const scope = nock(API_URL)
+      .get("/todos")
+      .reply(200, [
+        todosFixture[0],
+        {
+          ...todosFixture[1],
+          state: TodoState.TODO,
+        },
+      ]);
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const doneTrigger = screen.queryByTestId("home-done-trigger");
+
+    expect(doneTrigger).not.toBeInTheDocument();
+  });
+
+  it("should show todo todos", async () => {
     const scope = nock(API_URL).get("/todos").reply(200, todosFixture);
 
     const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
@@ -57,6 +105,35 @@ describe("HomePage", () => {
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
     expect(scope.isDone()).toBe(true);
+
+    const todoLabels = await screen.findAllByTestId("todo-label");
+
+    expect(todoLabels).toHaveLength(
+      todosFixture.filter((item) => item.state === TodoState.TODO).length,
+    );
+    expect(todoLabels[0]).toHaveTextContent(todosFixture[0].title);
+  });
+
+  it("should show all todos", async () => {
+    const user = userEvent.setup();
+
+    const scope = nock(API_URL).get("/todos").reply(200, todosFixture);
+
+    const mockedFetchTodos = jest.spyOn(todos, "fetchTodos");
+
+    renderWithProviders(<HomePage />);
+
+    await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
+
+    expect(scope.isDone()).toBe(true);
+
+    const doneTrigger = await screen.findByTestId("home-done-trigger");
+
+    await user.click(doneTrigger);
+
+    const doneRoot = await screen.findByTestId("home-done-root");
+
+    await waitFor(() => expect(doneRoot).toHaveAttribute("data-state", "open"));
 
     const todoLabels = await screen.findAllByTestId("todo-label");
 
@@ -79,7 +156,7 @@ describe("HomePage", () => {
 
     expect(scope.isDone()).toBe(true);
 
-    const error = await screen.findByTestId("error");
+    const error = await screen.findByTestId("home-error");
 
     expect(error).toBeInTheDocument();
     expect(error).toHaveTextContent("My error");
@@ -109,7 +186,15 @@ describe("HomePage", () => {
 
     expect(listScope.isDone()).toBe(true);
 
-    const todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
+    const doneTrigger = await screen.findByTestId("home-done-trigger");
+
+    await user.click(doneTrigger);
+
+    const doneRoot = await screen.findByTestId("home-done-root");
+
+    await waitFor(() => expect(doneRoot).toHaveAttribute("data-state", "open"));
+
+    let todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
 
     expect(todoCheckboxes[0]).not.toBeChecked();
 
@@ -131,6 +216,8 @@ describe("HomePage", () => {
     await waitFor(() => expect(mockedFetchTodos).toHaveBeenCalled());
 
     expect(listScope.isDone()).toBe(true);
+
+    todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
 
     await waitFor(() => expect(todoCheckboxes[0]).toBeChecked());
   });
@@ -166,7 +253,7 @@ describe("HomePage", () => {
 
     expect(scope.isDone()).toBe(true);
 
-    const addButton = await screen.findByTestId("add");
+    const addButton = await screen.findByTestId("home-add");
 
     await userEvent.click(addButton);
 

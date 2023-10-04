@@ -1,5 +1,4 @@
 import { TodoState } from "@common/types";
-import { DotsThree } from "@phosphor-icons/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import classNames from "classnames";
@@ -7,6 +6,8 @@ import { FC, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { fetchTodo, toggleTodo } from "../api/todos";
+import { Button } from "../components/ui/button";
+import { Loader } from "../components/ui/loader";
 import { useError } from "../hooks/useError";
 import { useNotFound } from "../hooks/useNotFound";
 
@@ -19,7 +20,11 @@ export const DetailsModalPage: FC = () => {
   const { id } = useParams<Params>();
 
   const queryClient = useQueryClient();
-  const { data: todo, error: todoError } = useQuery({
+  const {
+    data: todo,
+    isLoading: todoLoading,
+    error: todoError,
+  } = useQuery({
     queryKey: ["todos", id],
     queryFn: id ? () => fetchTodo(id) : undefined,
   });
@@ -28,7 +33,11 @@ export const DetailsModalPage: FC = () => {
     navigate("/", { replace: true });
   }, [navigate]);
 
-  const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation({
+  const {
+    mutate: toggleTodoMutate,
+    isLoading: toggleTodoLoading,
+    error: toggleTodoError,
+  } = useMutation({
     mutationFn: id ? () => toggleTodo(id) : undefined,
     onSuccess: () => {
       queryClient.invalidateQueries(["todos"]);
@@ -66,7 +75,7 @@ export const DetailsModalPage: FC = () => {
           }
         >
           {globalError ? (
-            <div className={"p-8"}>
+            <div className={"p-4"}>
               <div
                 className={
                   "flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
@@ -78,14 +87,12 @@ export const DetailsModalPage: FC = () => {
                 </p>
               </div>
             </div>
-          ) : !todo ? (
-            <div className={"flex h-96 items-center justify-center p-8"}>
-              <DotsThree
-                className={"h-12 w-12 animate-bounce"}
-                data-testid={"details-spinner"}
-              />
+          ) : null}
+          {todoLoading ? (
+            <div className={"flex h-32 items-center justify-center p-4"}>
+              <Loader size={"2rem"} data-testid={"details-loader"} />
             </div>
-          ) : (
+          ) : todo ? (
             <>
               <div
                 className={
@@ -108,34 +115,34 @@ export const DetailsModalPage: FC = () => {
                   {todo.title}
                 </h1>
               </div>
-              <div
-                className={"border-b border-b-neutral-300 p-4"}
-                data-testid={"details-todo-description"}
-              >
-                <p>{todo.description}</p>
-              </div>
-              <div className={"flex justify-end gap-2 p-4"}>
-                <button
-                  className={
-                    "rounded-full bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none"
-                  }
-                  data-testid={"details-todo-toggle"}
-                  onClick={onToggle}
-                >
-                  Toggle
-                </button>
-                <button
-                  className={
-                    "rounded-full bg-neutral-200 px-4 py-2 hover:bg-neutral-300"
-                  }
-                  data-testid={"details-close"}
-                  onClick={onClose}
-                >
-                  Close
-                </button>
+              <div className={"p-4"} data-testid={"details-todo-description"}>
+                <p>{todo.description || "No description"}</p>
               </div>
             </>
-          )}
+          ) : null}
+          <div
+            className={
+              "flex justify-end gap-2 border-t border-t-neutral-300 p-4"
+            }
+          >
+            {todo ? (
+              <Button
+                data-testid={"details-todo-toggle"}
+                loading={toggleTodoLoading}
+                onClick={onToggle}
+                variant={"primary"}
+              >
+                Toggle
+              </Button>
+            ) : null}
+            <Button
+              data-testid={"details-close"}
+              onClick={onClose}
+              variant={"secondary"}
+            >
+              Close
+            </Button>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

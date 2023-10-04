@@ -1,7 +1,9 @@
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { render, renderHook, screen, waitFor } from "@testing-library/react";
+import { renderHook, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { useForm } from "react-hook-form";
+
+import { renderWithProviders } from "../../tests/utilities";
 
 import { TodoForm, TodoFormSchema, TodoFormValues } from "./form";
 
@@ -9,7 +11,7 @@ describe("TodoForm", () => {
   it("should render", () => {
     const { result } = renderHook(() => useForm<TodoFormValues>());
 
-    render(<TodoForm form={result.current} />);
+    renderWithProviders(<TodoForm form={result.current} />);
 
     expect(true).toBe(true);
   });
@@ -24,7 +26,7 @@ describe("TodoForm", () => {
       }),
     );
 
-    render(<TodoForm form={result.current} />);
+    renderWithProviders(<TodoForm form={result.current} />);
 
     const titleInput = screen.getByTestId("todo-form-title");
     const descriptionInput = screen.getByTestId("todo-form-description");
@@ -38,7 +40,7 @@ describe("TodoForm", () => {
 
     const { result } = renderHook(() => useForm<TodoFormValues>());
 
-    render(<TodoForm form={result.current} />);
+    renderWithProviders(<TodoForm form={result.current} />);
 
     const titleInput = screen.getByTestId("todo-form-title");
     const descriptionInput = screen.getByTestId("todo-form-description");
@@ -62,7 +64,9 @@ describe("TodoForm", () => {
       useForm<TodoFormValues>(),
     );
 
-    const { rerender } = render(<TodoForm form={result.current} />);
+    const { rerender } = renderWithProviders(
+      <TodoForm form={result.current} />,
+    );
 
     const titleInput = screen.getByTestId("todo-form-title");
     const descriptionInput = screen.getByTestId("todo-form-description");
@@ -102,7 +106,9 @@ describe("TodoForm", () => {
       }),
     );
 
-    const { rerender } = render(<TodoForm form={result.current} />);
+    const { rerender } = renderWithProviders(
+      <TodoForm form={result.current} />,
+    );
 
     const titleInput = screen.getByTestId("todo-form-title");
     const descriptionInput = screen.getByTestId("todo-form-description");

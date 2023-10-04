@@ -1,4 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+
+import { renderWithProviders } from "../../tests/utilities";
 
 import { TodoList } from "./list";
 import { todosFixture } from "./tests/fixtures/todos";
@@ -8,7 +10,7 @@ describe("TodoList", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
 
-    render(
+    const { baseElement } = renderWithProviders(
       <TodoList
         onDetailsClick={onDetailsClick}
         onToggle={onToggle}
@@ -16,14 +18,14 @@ describe("TodoList", () => {
       />,
     );
 
-    expect(true).toBe(true);
+    expect(baseElement).toBeTruthy();
   });
 
   it("should render todo items", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
 
-    render(
+    renderWithProviders(
       <TodoList
         onDetailsClick={onDetailsClick}
         onToggle={onToggle}
@@ -42,7 +44,7 @@ describe("TodoList", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
 
-    render(
+    renderWithProviders(
       <TodoList
         onDetailsClick={onDetailsClick}
         onToggle={onToggle}
@@ -56,29 +58,11 @@ describe("TodoList", () => {
     expect(todoCheckboxes[1]).toBeChecked();
   });
 
-  it("should render done todos at the bottom", () => {
-    const onToggle = jest.fn();
-    const onDetailsClick = jest.fn();
-
-    render(
-      <TodoList
-        onDetailsClick={onDetailsClick}
-        onToggle={onToggle}
-        todos={[...todosFixture].reverse()}
-      />,
-    );
-
-    const todoTitles = screen.getAllByTestId("todo-label");
-
-    expect(todoTitles[0]).toHaveTextContent(todosFixture[0].title);
-    expect(todoTitles[1]).toHaveTextContent(todosFixture[1].title);
-  });
-
   it("should call onToggle when a todo is toggled", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
 
-    render(
+    renderWithProviders(
       <TodoList
         onDetailsClick={onDetailsClick}
         onToggle={onToggle}
@@ -100,7 +84,7 @@ describe("TodoList", () => {
     const onToggle = jest.fn();
     const onDetailsClick = jest.fn();
 
-    render(
+    renderWithProviders(
       <TodoList
         onDetailsClick={onDetailsClick}
         onToggle={onToggle}

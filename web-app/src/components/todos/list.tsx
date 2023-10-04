@@ -1,5 +1,9 @@
 import { TodoDTO, TodoState } from "@common/types";
-import { FC, useMemo } from "react";
+import { Info } from "@phosphor-icons/react";
+import { FC } from "react";
+
+import { Button } from "../ui/button";
+import { Tooltip } from "../ui/tooltip";
 
 export type TodoListOnToggle = (todo: TodoDTO) => void;
 export type TodoListOnDetailsClick = (todo: TodoDTO) => void;
@@ -40,15 +44,16 @@ export const TodoListItem: FC<TodoListItemProps> = ({
       >
         {todo.title}
       </label>
-      <button
-        className={
-          "absolute right-4 rounded-full border border-neutral-300 bg-white px-4 py-2 hover:bg-neutral-100"
-        }
-        data-testid={"todo-details"}
-        onClick={() => onDetailsClick(todo)}
-      >
-        Details
-      </button>
+      <Tooltip content={"Details"}>
+        <Button
+          className={"absolute right-4"}
+          data-testid={"todo-details"}
+          onClick={() => onDetailsClick(todo)}
+          variant={"light"}
+        >
+          <Info />
+        </Button>
+      </Tooltip>
     </li>
   );
 };
@@ -64,15 +69,9 @@ export const TodoList: FC<TodoListProps> = ({
   onToggle,
   onDetailsClick,
 }) => {
-  const sortedTodos = useMemo(() => {
-    return [...todos].sort((a, b) => {
-      return a.state - b.state;
-    });
-  }, [todos]);
-
   return (
-    <ul className={"flex flex-col gap-2"}>
-      {sortedTodos.map((todo) => (
+    <ul className={"flex flex-col gap-2"} data-testid={"todo-list"}>
+      {todos.map((todo) => (
         <TodoListItem
           key={todo.id}
           onDetailsClick={onDetailsClick}
