@@ -90,7 +90,7 @@ export const DetailsModalPage: FC = () => {
           ) : null}
           {todoLoading ? (
             <div className={"flex h-32 items-center justify-center p-4"}>
-              <Loader size={"2rem"} data-testid={"details-loader"} />
+              <Loader data-testid={"details-loader"} size={"2rem"} />
             </div>
           ) : todo ? (
             <>
