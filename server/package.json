@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "prebuild": "rimraf dist",
-    "dev": "nest start --preserveWatchOutput",
+    "dev": "nest start --watch --preserveWatchOutput",
     "build": "nest build",
     "lint": "eslint .",
     "format": "eslint . --fix",
