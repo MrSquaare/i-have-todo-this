@@ -1,11 +1,18 @@
 import { CircleNotch, IconProps } from "@phosphor-icons/react";
 import classNames from "classnames";
-import { FC } from "react";
+import { forwardRef } from "react";
 
 export type LoaderProps = IconProps;
 
-export const Loader: FC<LoaderProps> = ({ className, ...props }) => {
+export const Loader = forwardRef<SVGSVGElement, LoaderProps>(function Loader(
+  { className, ...props },
+  ref,
+) {
   return (
-    <CircleNotch {...props} className={classNames("animate-spin", className)} />
+    <CircleNotch
+      ref={ref}
+      {...props}
+      className={classNames("animate-spin", className)}
+    />
   );
-};
+});
