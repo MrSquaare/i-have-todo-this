@@ -92,7 +92,7 @@ export const HomePage: FC = () => {
           ) : null}{" "}
           {todosLoading ? (
             <div className={"flex items-center justify-center"}>
-              <Loader data-testid={"home-loader"} size={"4rem"} />
+              <Loader data-testid={"home-loader"} size={64} />
             </div>
           ) : todos ? (
             <>

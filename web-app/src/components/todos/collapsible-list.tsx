@@ -45,14 +45,14 @@ export const CollapsibleTodoList: FC<CollapsibleTodoListProps> = ({
             <ArrowsInLineVertical
               aria-label={"Close collapsed todo list"}
               className={"mr-1"}
-              size={"1.25rem"}
+              size={20}
               weight={"fill"}
             />
           ) : (
             <ArrowsOutLineVertical
               aria-label={"Open collapsed todo list"}
               className={"mr-1"}
-              size={"1.25rem"}
+              size={20}
               weight={"fill"}
             />
           )}
