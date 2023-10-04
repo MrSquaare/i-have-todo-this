@@ -26,9 +26,9 @@ describe("DetailsModalPage", () => {
   it("should show loading", async () => {
     renderWithProviders(<DetailsModalPage />);
 
-    const spinner = screen.getByTestId("details-spinner");
+    const loader = screen.getByTestId("details-loader");
 
-    expect(spinner).toBeInTheDocument();
+    expect(loader).toBeInTheDocument();
   });
 
   it("should redirect to home when todo is not found", async () => {
@@ -94,7 +94,9 @@ describe("DetailsModalPage", () => {
 
     expect(todoState).toHaveTextContent("To do");
     expect(todoTitle).toHaveTextContent(todo.title);
-    expect(todoDescription).toHaveTextContent(todo.description ?? "");
+    expect(todoDescription).toHaveTextContent(
+      todo.description || "No description",
+    );
   });
 
   it("should toggle todo", async () => {

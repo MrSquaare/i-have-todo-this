@@ -1,10 +1,10 @@
 {
   "private": true,
   "name": "server",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "prebuild": "rimraf dist",
-    "dev": "nest start --preserveWatchOutput",
+    "dev": "nest start --watch --preserveWatchOutput",
     "build": "nest build",
     "lint": "eslint .",
     "format": "eslint . --fix",

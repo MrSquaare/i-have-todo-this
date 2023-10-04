@@ -11,6 +11,7 @@ import {
   TodoFormSchema,
   TodoFormValues,
 } from "../components/todos/form";
+import { Button } from "../components/ui/button";
 import { useError } from "../hooks/useError";
 
 export const AddModalPage: FC = () => {
@@ -26,7 +27,11 @@ export const AddModalPage: FC = () => {
     navigate("/", { replace: true });
   }, [navigate]);
 
-  const { mutate: toggleTodoMutate, error: createTodoError } = useMutation({
+  const {
+    mutate: createTodoMutate,
+    isLoading: createTodoLoading,
+    error: createTodoError,
+  } = useMutation({
     mutationFn: createTodo,
     onSuccess: () => {
       queryClient.invalidateQueries(["todos"]);
@@ -36,9 +41,9 @@ export const AddModalPage: FC = () => {
 
   const onCreate = useCallback(
     (values: TodoFormValues) => {
-      toggleTodoMutate(values);
+      createTodoMutate(values);
     },
-    [toggleTodoMutate],
+    [createTodoMutate],
   );
 
   const { globalError } = useError(createTodoError);
@@ -64,7 +69,7 @@ export const AddModalPage: FC = () => {
           }
         >
           {globalError ? (
-            <div className={"p-8"}>
+            <div className={"p-4"}>
               <div
                 className={
                   "flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
@@ -76,31 +81,27 @@ export const AddModalPage: FC = () => {
                 </p>
               </div>
             </div>
-          ) : (
-            <form onSubmit={form.handleSubmit(onCreate)}>
-              <TodoForm form={form} />
-              <div className={"flex justify-end gap-2 p-4"}>
-                <button
-                  className={
-                    "rounded-full bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none"
-                  }
-                  data-testid={"add-create"}
-                  type={"submit"}
-                >
-                  Create
-                </button>
-                <button
-                  className={
-                    "rounded-full bg-neutral-200 px-4 py-2 hover:bg-neutral-300"
-                  }
-                  data-testid={"add-close"}
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </form>
-          )}
+          ) : null}
+          <form onSubmit={form.handleSubmit(onCreate)}>
+            <TodoForm form={form} loading={createTodoLoading} />
+            <div className={"flex justify-end gap-2 p-4"}>
+              <Button
+                data-testid={"add-create"}
+                loading={createTodoLoading}
+                type={"submit"}
+                variant={"primary"}
+              >
+                Create
+              </Button>
+              <Button
+                data-testid={"add-close"}
+                onClick={onClose}
+                variant={"secondary"}
+              >
+                Close
+              </Button>
+            </div>
+          </form>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

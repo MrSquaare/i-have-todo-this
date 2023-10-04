@@ -1,3 +1,4 @@
+import * as Tooltip from "@radix-ui/react-tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
 import { FC, PropsWithChildren } from "react";
@@ -28,7 +29,7 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <QueryClientProvider client={testQueryClient}>
-      {children}
+      <Tooltip.Provider>{children}</Tooltip.Provider>
     </QueryClientProvider>
   );
 };
