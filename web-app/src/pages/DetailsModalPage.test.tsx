@@ -26,9 +26,9 @@ describe("DetailsModalPage", () => {
   it("should show loading", async () => {
     renderWithProviders(<DetailsModalPage />);
 
-    const spinner = screen.getByTestId("details-spinner");
+    const loader = screen.getByTestId("details-loader");
 
-    expect(spinner).toBeInTheDocument();
+    expect(loader).toBeInTheDocument();
   });
 
   it("should redirect to home when todo is not found", async () => {

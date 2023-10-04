@@ -6,10 +6,6 @@ export type LoaderProps = IconProps;
 
 export const Loader: FC<LoaderProps> = ({ className, ...props }) => {
   return (
-    <CircleNotch
-      size={"4rem"}
-      {...props}
-      className={classNames("animate-spin", className)}
-    />
+    <CircleNotch {...props} className={classNames("animate-spin", className)} />
   );
 };

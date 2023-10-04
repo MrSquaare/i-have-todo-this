@@ -26,9 +26,9 @@ describe("HomePage", () => {
   it("should show loading", async () => {
     renderWithProviders(<HomePage />);
 
-    const spinner = screen.getByTestId("home-loader");
+    const loader = screen.getByTestId("home-loader");
 
-    expect(spinner).toBeInTheDocument();
+    expect(loader).toBeInTheDocument();
   });
 
   it("should show empty", async () => {
@@ -131,6 +131,10 @@ describe("HomePage", () => {
 
     await user.click(doneTrigger);
 
+    const doneRoot = await screen.findByTestId("home-done-root");
+
+    await waitFor(() => expect(doneRoot).toHaveAttribute("data-state", "open"));
+
     const todoLabels = await screen.findAllByTestId("todo-label");
 
     expect(todoLabels).toHaveLength(todosFixture.length);
@@ -185,6 +189,10 @@ describe("HomePage", () => {
     const doneTrigger = await screen.findByTestId("home-done-trigger");
 
     await user.click(doneTrigger);
+
+    const doneRoot = await screen.findByTestId("home-done-root");
+
+    await waitFor(() => expect(doneRoot).toHaveAttribute("data-state", "open"));
 
     let todoCheckboxes = await screen.findAllByTestId("todo-checkbox");
 

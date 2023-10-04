@@ -20,7 +20,11 @@ export const HomePage: FC = () => {
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  const { data: todos, error: todosError } = useQuery(["todos"], fetchTodos);
+  const {
+    data: todos,
+    isLoading: todosLoading,
+    error: todosError,
+  } = useQuery(["todos"], fetchTodos);
   const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation(
     toggleTodo,
     {
@@ -77,7 +81,7 @@ export const HomePage: FC = () => {
           {globalError ? (
             <div
               className={
-                "flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
+                "mb-4 flex items-center rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800"
               }
               role={"alert"}
             >
@@ -85,11 +89,12 @@ export const HomePage: FC = () => {
                 {globalError}
               </p>
             </div>
-          ) : !todos ? (
+          ) : null}{" "}
+          {todosLoading ? (
             <div className={"flex items-center justify-center"}>
-              <Loader data-testid={"home-loader"} />
+              <Loader data-testid={"home-loader"} size={"4rem"} />
             </div>
-          ) : (
+          ) : todos ? (
             <>
               <div className={"mb-4"}>
                 <h2 className={"mb-2 text-2xl font-medium"}>
@@ -117,6 +122,9 @@ export const HomePage: FC = () => {
                     onOpenChange={setShowDoneTodos}
                     onToggle={onToggle}
                     open={showDoneTodos}
+                    rootProps={{
+                      "data-testid": "home-done-root",
+                    }}
                     todos={doneTodos}
                     trigger={
                       <h2 className={"text-2xl font-medium"}>
@@ -130,7 +138,7 @@ export const HomePage: FC = () => {
                 </div>
               ) : null}
             </>
-          )}
+          ) : null}
           <div
             className={
               "fixed bottom-4 left-[50%] mt-4 flex translate-x-[-50%] justify-center"

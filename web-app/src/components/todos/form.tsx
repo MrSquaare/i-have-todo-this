@@ -18,9 +18,10 @@ export class TodoFormSchema implements TodoFormValues {
 
 type Props = {
   form: UseFormReturn<TodoFormValues>;
+  loading?: boolean;
 };
 
-export const TodoForm: FC<Props> = ({ form }) => {
+export const TodoForm: FC<Props> = ({ form, loading }) => {
   const { register, formState } = form;
 
   return (
@@ -32,12 +33,13 @@ export const TodoForm: FC<Props> = ({ form }) => {
           <input
             {...register("title")}
             className={classNames(
-              "w-full rounded-lg border-2 border-dashed border-neutral-300 text-2xl focus:ring-0",
+              "w-full rounded-lg border-2 border-dashed border-neutral-300 text-2xl disabled:cursor-not-allowed disabled:bg-neutral-300 focus:ring-0",
               {
                 "border-red-600 focus:border-red-600": formState.errors.title,
               },
             )}
             data-testid={"todo-form-title"}
+            disabled={loading}
             placeholder={"Title"}
           />
           {formState.errors.title && (
@@ -55,13 +57,14 @@ export const TodoForm: FC<Props> = ({ form }) => {
           <textarea
             {...register("description")}
             className={classNames(
-              "w-full rounded-lg border-2 border-dashed border-neutral-300 focus:ring-0",
+              "w-full rounded-lg border-2 border-dashed border-neutral-300 disabled:cursor-not-allowed disabled:bg-neutral-300 focus:ring-0",
               {
                 "border-red-600 focus:border-red-600":
                   formState.errors.description,
               },
             )}
             data-testid={"todo-form-description"}
+            disabled={loading}
             placeholder={"Description"}
           />
           {formState.errors.description && (

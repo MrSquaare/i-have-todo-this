@@ -4,9 +4,11 @@ import { FC, ReactNode } from "react";
 
 import { PropsOf } from "../../types/props";
 
-export type TooltipProps = PropsOf<typeof RadixTooltip.Trigger> & {
+export type TooltipProps = {
+  children: ReactNode;
   content: ReactNode;
   rootProps?: PropsOf<typeof RadixTooltip.Root>;
+  triggerProps?: PropsOf<typeof RadixTooltip.Trigger>;
   portalProps?: PropsOf<typeof RadixTooltip.Portal>;
   contentProps?: PropsOf<typeof RadixTooltip.Content>;
 };
@@ -15,9 +17,9 @@ export const Tooltip: FC<TooltipProps> = ({
   children,
   content,
   rootProps,
+  triggerProps,
   portalProps,
   contentProps,
-  ...triggerProps
 }) => {
   return (
     <RadixTooltip.Root delayDuration={0} {...rootProps}>
