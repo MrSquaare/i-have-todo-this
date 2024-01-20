@@ -28,7 +28,7 @@ export const TodoListItem: FC<TodoListItemProps> = ({
       <input
         checked={todo.state === TodoState.DONE}
         className={
-          "peer absolute left-4 h-6 w-6 rounded-md border-neutral-300 bg-white"
+          "peer absolute left-4 size-6 rounded-md border-neutral-300 bg-white"
         }
         data-testid={"todo-checkbox"}
         id={`todo-checkbox-${todo.id}`}
