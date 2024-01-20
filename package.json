@@ -46,8 +46,8 @@
     "common/*"
   ],
   "devDependencies": {
-    "eslint-plugin-tailwindcss": "^3.13.0",
-    "npm-check-updates": "^16.14.4",
-    "turbo": "^1.10.14"
+    "eslint-plugin-tailwindcss": "^3.14.0",
+    "npm-check-updates": "^16.14.12",
+    "turbo": "^1.11.3"
   }
 }
