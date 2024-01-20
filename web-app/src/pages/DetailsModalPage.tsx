@@ -22,11 +22,11 @@ export const DetailsModalPage: FC = () => {
   const queryClient = useQueryClient();
   const {
     data: todo,
-    isLoading: todoLoading,
+    isPending: todoPending,
     error: todoError,
   } = useQuery({
-    queryKey: ["todos", id],
     queryFn: id ? () => fetchTodo(id) : undefined,
+    queryKey: ["todos", id],
   });
 
   const onClose = useCallback(() => {
@@ -35,12 +35,14 @@ export const DetailsModalPage: FC = () => {
 
   const {
     mutate: toggleTodoMutate,
-    isLoading: toggleTodoLoading,
+    isPending: toggleTodoPending,
     error: toggleTodoError,
   } = useMutation({
     mutationFn: id ? () => toggleTodo(id) : undefined,
     onSuccess: () => {
-      queryClient.invalidateQueries(["todos"]);
+      queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
     },
   });
 
@@ -88,7 +90,7 @@ export const DetailsModalPage: FC = () => {
               </div>
             </div>
           ) : null}
-          {todoLoading ? (
+          {todoPending ? (
             <div className={"flex h-32 items-center justify-center p-4"}>
               <Loader data-testid={"details-loader"} size={"2rem"} />
             </div>
@@ -128,7 +130,7 @@ export const DetailsModalPage: FC = () => {
             {todo ? (
               <Button
                 data-testid={"details-todo-toggle"}
-                loading={toggleTodoLoading}
+                loading={toggleTodoPending}
                 onClick={onToggle}
                 variant={"primary"}
               >

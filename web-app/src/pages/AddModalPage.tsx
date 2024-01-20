@@ -29,12 +29,14 @@ export const AddModalPage: FC = () => {
 
   const {
     mutate: createTodoMutate,
-    isLoading: createTodoLoading,
+    isPending: createTodoPending,
     error: createTodoError,
   } = useMutation({
     mutationFn: createTodo,
     onSuccess: () => {
-      queryClient.invalidateQueries(["todos"]);
+      queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
       onClose();
     },
   });
@@ -83,11 +85,11 @@ export const AddModalPage: FC = () => {
             </div>
           ) : null}
           <form onSubmit={form.handleSubmit(onCreate)}>
-            <TodoForm form={form} loading={createTodoLoading} />
+            <TodoForm form={form} loading={createTodoPending} />
             <div className={"flex justify-end gap-2 p-4"}>
               <Button
                 data-testid={"add-create"}
-                loading={createTodoLoading}
+                loading={createTodoPending}
                 type={"submit"}
                 variant={"primary"}
               >
