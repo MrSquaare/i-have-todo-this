@@ -22,17 +22,20 @@ export const HomePage: FC = () => {
   const queryClient = useQueryClient();
   const {
     data: todos,
-    isLoading: todosLoading,
+    isPending: todosPending,
     error: todosError,
-  } = useQuery(["todos"], fetchTodos);
-  const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation(
-    toggleTodo,
-    {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries(["todos"]);
-      },
+  } = useQuery({
+    queryFn: fetchTodos,
+    queryKey: ["todos"],
+  });
+  const { mutate: toggleTodoMutate, error: toggleTodoError } = useMutation({
+    mutationFn: toggleTodo,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
     },
-  );
+  });
 
   const [todoTodos, doneTodos] = todos?.reduce(
     (acc, todo) => {
@@ -75,7 +78,7 @@ export const HomePage: FC = () => {
       <main className={"min-h-screen"}>
         <div className={"mx-auto w-full max-w-6xl p-8"}>
           <div className={"flex items-center justify-center gap-4 py-16"}>
-            <img alt={"IHTT"} className={"h-16 w-16"} src={"/logo.png"} />
+            <img alt={"IHTT"} className={"size-16"} src={"/logo.png"} />
             <h1 className={"text-center text-6xl font-bold"}>IHTT</h1>
           </div>
           {globalError ? (
@@ -90,7 +93,7 @@ export const HomePage: FC = () => {
               </p>
             </div>
           ) : null}{" "}
-          {todosLoading ? (
+          {todosPending ? (
             <div className={"flex items-center justify-center"}>
               <Loader data-testid={"home-loader"} size={64} />
             </div>
