@@ -11,12 +11,12 @@ const createTestQueryClient = () => {
     defaultOptions: {
       queries: {
         ...queryClientConfig.defaultOptions?.queries,
-        cacheTime: Infinity,
+        gcTime: Infinity,
         retry: false,
       },
       mutations: {
         ...queryClientConfig.defaultOptions?.mutations,
-        cacheTime: Infinity,
+        gcTime: Infinity,
         retry: false,
       },
     },
