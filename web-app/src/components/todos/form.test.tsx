@@ -1,5 +1,5 @@
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { renderHook, screen, waitFor } from "@testing-library/react";
+import { act, renderHook, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { useForm } from "react-hook-form";
 
@@ -74,13 +74,15 @@ describe("TodoForm", () => {
     expect(titleInput).toHaveValue("");
     expect(descriptionInput).toHaveValue("");
 
-    result.current.setError("title", {
-      type: "isNotEmpty",
-      message: "title should not be empty",
-    });
-    result.current.setError("description", {
-      type: "isString",
-      message: "description should be a string",
+    act(() => {
+      result.current.setError("title", {
+        type: "isNotEmpty",
+        message: "title should not be empty",
+      });
+      result.current.setError("description", {
+        type: "isString",
+        message: "description should be a string",
+      });
     });
 
     rerenderHook();
